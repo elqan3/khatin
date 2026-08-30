@@ -109,12 +109,23 @@ export default function ChildrenList({
           </p>
         </div>
 
-        <Link
-          href="/children/new"
-          className="inline-flex items-center justify-center rounded-xl bg-[#1e3a5f] px-4 py-3 text-sm font-medium text-white transition hover:bg-[#16304f]"
-        >
-          + إضافة طفل
-        </Link>
+        <div className="flex flex-col gap-2 sm:flex-row">
+
+          <Link
+            href="/children/import"
+            className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+          >
+            📥 استيراد الأطفال
+          </Link>
+
+          <Link
+            href="/children/new"
+            className="inline-flex items-center justify-center rounded-xl bg-[#1e3a5f] px-4 py-3 text-sm font-medium text-white transition hover:bg-[#16304f]"
+          >
+            + إضافة طفل
+          </Link>
+
+        </div>
 
       </div>
 
@@ -248,12 +259,23 @@ export default function ChildrenList({
           </p>
 
           {children.length === 0 && (
-            <Link
-              href="/children/new"
-              className="mt-6 inline-flex rounded-xl bg-[#1e3a5f] px-5 py-3 text-sm font-medium text-white hover:bg-[#16304f]"
-            >
-              إضافة أول طفل
-            </Link>
+            <div className="mt-6 flex flex-col justify-center gap-2 sm:flex-row">
+
+              <Link
+                href="/children/import"
+                className="inline-flex rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50"
+              >
+                📥 استيراد الأطفال
+              </Link>
+
+              <Link
+                href="/children/new"
+                className="inline-flex rounded-xl bg-[#1e3a5f] px-5 py-3 text-sm font-medium text-white hover:bg-[#16304f]"
+              >
+                إضافة أول طفل
+              </Link>
+
+            </div>
           )}
 
         </div>
