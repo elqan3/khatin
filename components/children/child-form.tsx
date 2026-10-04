@@ -369,7 +369,7 @@ export default function ChildForm({
                   e.target.value
                 )
               }
-              placeholder="اسم الأم"
+              placeholder="اختياري"
               disabled={loading}
               className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1e3a5f] disabled:bg-slate-50"
             />
@@ -386,7 +386,7 @@ export default function ChildForm({
         </h2>
 
         <p className="mt-1 text-sm text-slate-500">
-          اربط الطفل بعائلة موجودة أو أنشئ عائلة جديدة.
+          ربط العائلة اختياري ويمكن إضافته لاحقًا.
         </p>
 
         <div className="mt-5">
@@ -499,7 +499,7 @@ export default function ChildForm({
                   e.target.value
                 )
               }
-              placeholder="اسم الحاضن"
+              placeholder="اختياري"
               disabled={loading}
               className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1e3a5f] disabled:bg-slate-50"
             />
@@ -517,7 +517,7 @@ export default function ChildForm({
               onChange={(e) =>
                 setPhone(e.target.value)
               }
-              placeholder="09xxxxxxxx"
+              placeholder="اختياري"
               disabled={loading}
               className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1e3a5f] disabled:bg-slate-50"
             />
