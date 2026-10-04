@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 type Child = {
   id: string;
   full_name: string;
+  registration_number: string;
   date_of_birth: string;
   gender: "male" | "female";
   nationality: string;
@@ -68,6 +69,9 @@ export default function ChildrenList({
     return children.filter((child) => {
       const matchesSearch =
         child.full_name
+          .toLowerCase()
+          .includes(search.toLowerCase()) ||
+        child.registration_number
           .toLowerCase()
           .includes(search.toLowerCase());
 
@@ -173,7 +177,7 @@ export default function ChildrenList({
             type="search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="البحث عن طفل بالاسم..."
+            placeholder="البحث بالاسم أو رقم القيد..."
             className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-[#1e3a5f] focus:bg-white"
           />
 
@@ -313,6 +317,10 @@ export default function ChildrenList({
 
                     <p className="mt-1 text-sm text-slate-500">
                       {age} سنة
+                    </p>
+
+                    <p className="mt-1 text-xs text-slate-400">
+                      رقم القيد: {child.registration_number || "0000"}
                     </p>
 
                   </div>
