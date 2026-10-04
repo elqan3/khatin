@@ -92,6 +92,7 @@ export default async function ChildPage({
     .select(`
       id,
       full_name,
+      registration_number,
       date_of_birth,
       gender,
       nationality,
@@ -305,6 +306,11 @@ export default async function ChildPage({
           <InfoItem
             label="الاسم الكامل"
             value={child.full_name}
+          />
+
+          <InfoItem
+            label="رقم القيد"
+            value={child.registration_number}
           />
 
           <InfoItem
