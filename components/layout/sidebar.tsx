@@ -29,11 +29,11 @@ const navigation = [
     href: "/points",
     icon: "⭐",
   },
-  {
-    title: "المالية",
-    href: "/finance",
-    icon: "💰",
-  },
+ //{
+  //  title: "المالية",
+  //  href: "/finance",
+  //  icon: "💰",
+ // },
   {
     title: "التقارير",
     href: "/reports",
