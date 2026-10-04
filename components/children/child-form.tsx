@@ -20,7 +20,7 @@ type Child = {
   registration_number: string;
   date_of_birth: string;
   gender: "male" | "female";
-  nationality: string;
+  nationality: string | null;
   mother_name: string | null;
   guardian_name: string | null;
   phone: string | null;
@@ -66,7 +66,7 @@ export default function ChildForm({
   );
 
   const [nationality, setNationality] = useState(
-    child?.nationality || "Libyan"
+    child?.nationality || ""
   );
 
   const [motherName, setMotherName] = useState(
@@ -96,7 +96,7 @@ export default function ChildForm({
 
   const [phoneOwner, setPhoneOwner] =
     useState(
-      child?.phone_owner || "mother"
+      child?.phone_owner || ""
     );
 
   const [notes, setNotes] = useState(
@@ -137,27 +137,6 @@ export default function ChildForm({
       return;
     }
 
-    if (!familyId) {
-      setError("يرجى اختيار العائلة.");
-      return;
-    }
-
-    if (
-      creatingFamily &&
-      !newFamilyName.trim()
-    ) {
-      setError(
-        "يرجى إدخال اسم العائلة الجديدة."
-      );
-      return;
-    }
-
-    if (!caregiverTypeId) {
-      setError(
-        "يرجى اختيار نوع الحاضن."
-      );
-      return;
-    }
 
     setLoading(true);
 
@@ -188,23 +167,23 @@ export default function ChildForm({
       }
 
       const childData = {
-        family_id: selectedFamilyId,
+        family_id: selectedFamilyId || null,
         full_name: fullName.trim(),
         registration_number: registrationNumber.trim() || "0000",
         date_of_birth: dateOfBirth,
         gender,
         nationality:
-          nationality.trim() || "Libyan",
+          nationality.trim() || null,
         mother_name:
           motherName.trim() || null,
         caregiver_type_id:
-          caregiverTypeId,
+          caregiverTypeId || null,
         guardian_name:
           caregiverName.trim() || null,
         phone:
           phone.trim() || null,
         phone_owner:
-          phoneOwner || null,
+          phone.trim() ? phoneOwner || null : null,
         notes:
           notes.trim() || null,
         status,
@@ -363,6 +342,7 @@ export default function ChildForm({
             </label>
 
             <input
+              placeholder="اختياري"
               value={nationality}
               onChange={(e) =>
                 setNationality(
@@ -422,7 +402,7 @@ export default function ChildForm({
             className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1e3a5f] disabled:bg-slate-50"
           >
             <option value="">
-              اختر العائلة
+              بدون عائلة
             </option>
 
             {families.map((family) => (
@@ -476,7 +456,7 @@ export default function ChildForm({
           {/* نوع الحاضن */}
           <div>
             <label className="mb-2 block text-sm font-medium">
-              نوع الحاضن
+              نوع الحاضن <span className="text-xs font-normal text-slate-400">(اختياري)</span>
             </label>
 
             <select
@@ -490,7 +470,7 @@ export default function ChildForm({
               className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1e3a5f] disabled:bg-slate-50"
             >
               <option value="">
-                اختر نوع الحاضن
+                بدون تحديد
               </option>
 
               {caregiverTypes.map((type) => (
@@ -557,6 +537,10 @@ export default function ChildForm({
               disabled={loading}
               className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1e3a5f] disabled:bg-slate-50"
             >
+              <option value="">
+                اختر صاحب الهاتف
+              </option>
+
               <option value="mother">
                 الأم
               </option>
