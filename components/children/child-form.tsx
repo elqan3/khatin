@@ -164,6 +164,8 @@ export default function ChildForm({
         }
 
         selectedFamilyId = family.id;
+      } else if (creatingFamily) {
+        selectedFamilyId = "";
       }
 
       const childData = {
