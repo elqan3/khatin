@@ -23,6 +23,7 @@ export default async function EditChildPage({
       .select(`
         id,
         full_name,
+        registration_number,
         date_of_birth,
         gender,
         nationality,
