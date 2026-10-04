@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 type Child = {
@@ -37,6 +37,64 @@ export default function AttendanceList({
 
   const [error, setError] =
     useState("");
+
+  const [pointSettings, setPointSettings] = useState({
+    participation: 1,
+    special: 1,
+  });
+
+  const [pointLoading, setPointLoading] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    supabase
+      .from("point_settings")
+      .select("action_type, points")
+      .in("action_type", ["participation", "special"])
+      .then(({ data }) => {
+        if (!mounted || !data) return;
+
+        setPointSettings((current) => ({
+          participation:
+            data.find((row) => row.action_type === "participation")?.points ??
+            current.participation,
+          special:
+            data.find((row) => row.action_type === "special")?.points ??
+            current.special,
+        }));
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  async function addPoint(
+    childId: string,
+    actionType: "participation" | "special"
+  ) {
+    setError("");
+    setPointLoading(`${childId}-${actionType}`);
+
+    try {
+      const { error: pointError } = await supabase.rpc(
+        "add_point_transaction",
+        {
+          p_child_id: childId,
+          p_action_type: actionType,
+          p_meeting_id: meetingId,
+        }
+      );
+
+      if (pointError) throw pointError;
+    } catch (err: any) {
+      console.error(err);
+      setError(err?.message || "حدث خطأ أثناء إضافة النقاط.");
+    } finally {
+      setPointLoading(null);
+    }
+  }
 
   const attendanceMap = new Map(
     attendance.map((record) => [
@@ -277,10 +335,32 @@ export default function AttendanceList({
 
                   </div>
 
-                  {/* Buttons */}
+                  {/* Points + attendance */}
                   <div className="flex flex-wrap gap-2">
 
                     <button
+                      type="button"
+                      disabled={pointLoading !== null}
+                      onClick={() => addPoint(child.id, "participation")}
+                      className="rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-medium text-blue-700 transition hover:bg-blue-100 disabled:opacity-50"
+                    >
+                      {pointLoading === `${child.id}-participation`
+                        ? "..."
+                        : `مشاركة ${pointSettings.participation >= 0 ? "+" : ""}${pointSettings.participation}`}
+                    </button>
+
+                    <button
+                      type="button"
+                      disabled={pointLoading !== null}
+                      onClick={() => addPoint(child.id, "special")}
+                      className="rounded-lg border border-purple-200 bg-purple-50 px-3 py-2 text-xs font-medium text-purple-700 transition hover:bg-purple-100 disabled:opacity-50"
+                    >
+                      {pointLoading === `${child.id}-special`
+                        ? "..."
+                        : `خاص ${pointSettings.special >= 0 ? "+" : ""}${pointSettings.special}`}
+                    </button>
+
+                                        <button
                       type="button"
                       disabled={isLoading}
                       onClick={() =>
@@ -344,7 +424,6 @@ export default function AttendanceList({
                     </button>
 
                   </div>
-
                 </div>
 
               </div>
