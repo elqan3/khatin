@@ -148,7 +148,7 @@ export default function ChildForm({
        *
        * نسمح بذلك في الإضافة والتعديل.
        */
-      if (creatingFamily) {
+      if (creatingFamily && newFamilyName.trim()) {
         const { data: family, error: familyError } =
           await supabase
             .from("families")
