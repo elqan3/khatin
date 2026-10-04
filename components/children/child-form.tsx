@@ -17,6 +17,7 @@ type CaregiverType = {
 type Child = {
   id: string;
   full_name: string;
+  registration_number: string;
   date_of_birth: string;
   gender: "male" | "female";
   nationality: string;
@@ -50,6 +51,10 @@ export default function ChildForm({
 
   const [fullName, setFullName] = useState(
     child?.full_name || ""
+  );
+
+  const [registrationNumber, setRegistrationNumber] = useState(
+    child?.registration_number || "0000"
   );
 
   const [dateOfBirth, setDateOfBirth] = useState(
@@ -185,6 +190,7 @@ export default function ChildForm({
       const childData = {
         family_id: selectedFamilyId,
         full_name: fullName.trim(),
+        registration_number: registrationNumber.trim() || "0000",
         date_of_birth: dateOfBirth,
         gender,
         nationality:
@@ -282,6 +288,25 @@ export default function ChildForm({
               disabled={loading}
               className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1e3a5f] disabled:bg-slate-50"
             />
+          </div>
+
+          {/* رقم القيد */}
+          <div>
+            <label className="mb-2 block text-sm font-medium">
+              رقم القيد
+            </label>
+
+            <input
+              value={registrationNumber}
+              onChange={(e) => setRegistrationNumber(e.target.value)}
+              placeholder="اتركه فارغًا للحفظ كـ 0000"
+              disabled={loading}
+              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-[#1e3a5f] disabled:bg-slate-50"
+            />
+
+            <p className="mt-1 text-xs text-slate-400">
+              يمكن أن يشترك أكثر من طفل في نفس رقم القيد.
+            </p>
           </div>
 
           {/* تاريخ الميلاد */}
