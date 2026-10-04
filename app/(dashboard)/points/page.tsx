@@ -1,4 +1,5 @@
 import PointsSettings from "@/components/points/points-settings";
+import PointsLeaderboard from "@/components/points/points-leaderboard";
 
 export default function PointsPage() {
   return (
@@ -10,6 +11,7 @@ export default function PointsPage() {
         </p>
       </div>
       <PointsSettings />
+      <PointsLeaderboard />
     </div>
   );
 }
