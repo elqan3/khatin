@@ -7,12 +7,12 @@ import { useState } from "react";
 const navigation = [
   { title: "الرئيسية", href: "/", icon: "⌂" },
   { title: "الأطفال", href: "/children", icon: "👧" },
-  { title: "العائلات", href: "/families", icon: "👨‍👩‍👧" },
+ // { title: "العائلات", href: "/families", icon: "👨‍👩‍👧" },
   { title: "اللقاءات", href: "/meetings", icon: "📅" },
   { title: "النقاط", href: "/points", icon: "⭐" },
-  { title: "المالية", href: "/finance", icon: "💰" },
-  { title: "التقارير", href: "/reports", icon: "📊" },
-  { title: "الإعدادات", href: "/settings", icon: "⚙" },
+  //{ title: "المالية", href: "/finance", icon: "💰" },
+//  { title: "التقارير", href: "/reports", icon: "📊" },
+//  { title: "الإعدادات", href: "/settings", icon: "⚙" },
 ];
 
 export function MobileSidebar() {
