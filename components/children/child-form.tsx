@@ -51,7 +51,11 @@ export default function ChildForm({ child, mode = "create" }: ChildFormProps) {
     e.preventDefault();
     setError("");
     if (!fullName.trim()) return setError("يرجى إدخال الاسم الكامل.");
-    const year = birthYear.trim() ? Number(birthYear) : null;
+    if (!birthYear.trim()) return setError("يرجى إدخال سنة الميلاد.");
+    if (!motherName.trim()) return setError("يرجى إدخال اسم الأم.");
+    if (!residence.trim()) return setError("يرجى إدخال السكن.");
+    if (!familyNumber.trim()) return setError("يرجى إدخال رقم العائلة.");
+    const year = Number(birthYear);
     if (year !== null && (!Number.isInteger(year) || year < 1900 || year > new Date().getFullYear())) {
       return setError("يرجى إدخال سنة ميلاد صحيحة.");
     }
@@ -93,17 +97,17 @@ export default function ChildForm({ child, mode = "create" }: ChildFormProps) {
             <input required value={fullName} onChange={e => setFullName(e.target.value)} placeholder="الاسم الكامل للطفل" disabled={loading} className={inputClass + " mt-2"} />
           </label>
           <label className="block text-sm font-medium">سنة الميلاد
-            <input type="number" min="1900" max={new Date().getFullYear()} step="1" value={birthYear} onChange={e => setBirthYear(e.target.value)} placeholder="مثال: 2017" disabled={loading} className={inputClass + " mt-2"} />
+            <input required type="number" min="1900" max={new Date().getFullYear()} step="1" value={birthYear} onChange={e => setBirthYear(e.target.value)} placeholder="مثال: 2017" disabled={loading} className={inputClass + " mt-2"} />
             <span className="mt-1 block text-xs font-normal text-slate-400">أدخل السنة فقط، دون اليوم أو الشهر.</span>
           </label>
           <label className="block text-sm font-medium">اسم الأم
-            <input value={motherName} onChange={e => setMotherName(e.target.value)} placeholder="اسم الأم" disabled={loading} className={inputClass + " mt-2"} />
+            <input required value={motherName} onChange={e => setMotherName(e.target.value)} placeholder="اسم الأم" disabled={loading} className={inputClass + " mt-2"} />
           </label>
           <label className="block text-sm font-medium">السكن
-            <input value={residence} onChange={e => setResidence(e.target.value)} placeholder="المنطقة أو مكان السكن" disabled={loading} className={inputClass + " mt-2"} />
+            <input required value={residence} onChange={e => setResidence(e.target.value)} placeholder="المنطقة أو مكان السكن" disabled={loading} className={inputClass + " mt-2"} />
           </label>
           <label className="block text-sm font-medium">رقم العائلة
-            <input value={familyNumber} onChange={e => setFamilyNumber(e.target.value)} placeholder="رقم العائلة في سجل المؤسسة" disabled={loading} className={inputClass + " mt-2"} />
+            <input required value={familyNumber} onChange={e => setFamilyNumber(e.target.value)} placeholder="رقم العائلة في سجل المؤسسة" disabled={loading} className={inputClass + " mt-2"} />
           </label>
         </div>
       </section>
