@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 
 type Row = { rowNumber:number; full_name:string; birth_year:number; mother_name:string; residence:string; family_number:string; notes:string };
 type Result = { inserted_count:number; skipped_count:number; error_count:number; errors:{row:number;message:string}[] };
-const REQUIRED = ["الاسم الكامل","تاريخ الميلاد","اسم الأم","السكن","العائلة"];
+const REQUIRED = ["الاسم الكامل","تاريخ الميلاد","اسم الأم","العائلة"];
 const str = (v:unknown) => v == null ? "" : String(v).trim();
 function yearOf(v:unknown):number {
  const s=str(v); const m=s.match(/^(\d{4})(?:[-/.]\d{1,2}(?:[-/.]\d{1,2})?)?$/);
@@ -39,7 +39,6 @@ export default function ChildrenImportPage(){
     if(!row.full_name)issues.push(`السطر ${row.rowNumber}: الاسم الكامل فارغ.`);
     if(!row.birth_year)issues.push(`السطر ${row.rowNumber}: سنة الميلاد غير صحيحة.`);
     if(!row.mother_name)issues.push(`السطر ${row.rowNumber}: اسم الأم فارغ.`);
-    if(!row.residence)issues.push(`السطر ${row.rowNumber}: السكن فارغ.`);
     if(!row.family_number)issues.push(`السطر ${row.rowNumber}: رقم العائلة فارغ.`);
     return row;
    });
