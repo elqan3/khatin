@@ -181,7 +181,7 @@ export default function ChildrenList({
             type="search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="البحث بالاسم أو رقم القيد..."
+            placeholder="البحث بالاسم أو رقم العائلة..."
             className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-[#1e3a5f] focus:bg-white"
           />
 
@@ -339,6 +339,11 @@ export default function ChildrenList({
                       {child.family_number || child.families?.family_name || "غير محددة"}
                     </span>
 
+                  </div>
+
+                  <div className="flex justify-between gap-3 text-sm">
+                    <span className="text-slate-500">السكن</span>
+                    <span className="truncate font-medium text-slate-700">{child.residence || "غير محدد"}</span>
                   </div>
 
                   <div className="flex justify-between gap-3 text-sm">
