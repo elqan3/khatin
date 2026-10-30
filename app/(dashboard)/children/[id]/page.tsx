@@ -317,7 +317,7 @@ export default async function ChildPage({
           />
 
           <InfoItem
-            label="تاريخ الميلاد"
+            label="سنة الميلاد"
             value={birthYearLabel}
           />
 
