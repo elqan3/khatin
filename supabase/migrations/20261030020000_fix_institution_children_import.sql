@@ -45,12 +45,12 @@ begin
     exception when others then v_birth_year := null;
     end;
 
-    if v_full_name is null or v_mother_name is null or v_residence is null
+    if v_full_name is null or v_mother_name is null
        or v_family_number is null or v_birth_year is null
        or v_birth_year < 1900 or v_birth_year > extract(year from current_date)::integer then
       v_error_count := v_error_count + 1;
       v_errors := v_errors || jsonb_build_object('row', row_number,
-        'message', 'الاسم وسنة الميلاد واسم الأم والسكن ورقم العائلة حقول مطلوبة، وسنة الميلاد يجب أن تكون صحيحة.');
+        'message', 'الاسم وسنة الميلاد واسم الأم ورقم العائلة حقول مطلوبة، وسنة الميلاد يجب أن تكون صحيحة.');
       continue;
     end if;
 
