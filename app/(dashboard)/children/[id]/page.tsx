@@ -94,6 +94,9 @@ export default async function ChildPage({
       full_name,
       registration_number,
       date_of_birth,
+      birth_year,
+      residence,
+      family_number,
       gender,
       nationality,
       mother_name,
@@ -198,10 +201,10 @@ export default async function ChildPage({
     })
   );
 
-  const age = calculateAge(child.date_of_birth);
+  const age = child.birth_year ? new Date().getFullYear() - child.birth_year : child.date_of_birth ? calculateAge(child.date_of_birth) : null;
+  const birthYearLabel = child.birth_year ? String(child.birth_year) : child.date_of_birth ? String(new Date(child.date_of_birth).getFullYear()) : null;
 
-  const genderLabel =
-    child.gender === "male" ? "ذكر" : "أنثى";
+  const genderLabel = child.gender === "male" ? "ذكر" : child.gender === "female" ? "أنثى" : "غير محدد";
 
   const statusLabel =
     child.status === "active" ? "نشط" : "غير نشط";
@@ -231,7 +234,7 @@ export default async function ChildPage({
           <div className="flex items-center gap-4">
 
             <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-slate-100 text-4xl">
-              {child.gender === "male" ? "👦" : "👧"}
+              {child.gender === "male" ? "👦" : child.gender === "female" ? "👧" : "👤"}
             </div>
 
             <div className="min-w-0">
@@ -260,7 +263,7 @@ export default async function ChildPage({
 
                 {" - "}
 
-                {age} سنة
+                {age === null ? "العمر غير محدد" : `${age} سنة`}
 
                 {child.families?.family_name ? (
                   <>
@@ -314,13 +317,13 @@ export default async function ChildPage({
           />
 
           <InfoItem
-            label="تاريخ الميلاد"
-            value={formatDate(child.date_of_birth)}
+            label="سنة الميلاد"
+            value={birthYearLabel}
           />
 
           <InfoItem
             label="العمر"
-            value={age + " سنة"}
+            value={age === null ? null : age + " سنة"}
           />
 
           <InfoItem
@@ -333,10 +336,9 @@ export default async function ChildPage({
             value={child.nationality}
           />
 
-          <InfoItem
-            label="اسم الأم"
-            value={child.mother_name}
-          />
+          <InfoItem label="اسم الأم" value={child.mother_name} />
+          <InfoItem label="السكن" value={child.residence} />
+          <InfoItem label="رقم العائلة" value={child.family_number} />
 
         </div>
 

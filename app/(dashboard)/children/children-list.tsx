@@ -7,8 +7,11 @@ type Child = {
   id: string;
   full_name: string;
   registration_number: string;
-  date_of_birth: string;
-  gender: "male" | "female";
+  date_of_birth: string | null;
+  birth_year: number | null;
+  residence: string | null;
+  family_number: string | null;
+  gender: "male" | "female" | null;
   nationality: string;
   status: "active" | "inactive";
   families: {
@@ -21,7 +24,9 @@ type ChildrenListProps = {
   children: Child[];
 };
 
-function calculateAge(dateOfBirth: string) {
+function calculateAge(dateOfBirth: string | null, birthYear: number | null) {
+  if (birthYear) return new Date().getFullYear() - birthYear;
+  if (!dateOfBirth) return null;
   const birth = new Date(dateOfBirth);
   const today = new Date();
 
@@ -71,9 +76,8 @@ export default function ChildrenList({
         child.full_name
           .toLowerCase()
           .includes(search.toLowerCase()) ||
-        child.registration_number
-          .toLowerCase()
-          .includes(search.toLowerCase());
+        (child.registration_number || "").toLowerCase().includes(search.toLowerCase()) ||
+        (child.family_number || "").toLowerCase().includes(search.toLowerCase());
 
       const matchesGender =
         !gender || child.gender === gender;
@@ -177,7 +181,7 @@ export default function ChildrenList({
             type="search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="البحث بالاسم أو رقم القيد..."
+            placeholder="البحث بالاسم أو رقم العائلة..."
             className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition focus:border-[#1e3a5f] focus:bg-white"
           />
 
@@ -290,9 +294,7 @@ export default function ChildrenList({
 
           {filteredChildren.map((child) => {
 
-            const age = calculateAge(
-              child.date_of_birth
-            );
+            const age = calculateAge(child.date_of_birth, child.birth_year);
 
             return (
               <Link
@@ -304,9 +306,7 @@ export default function ChildrenList({
                 <div className="flex items-start gap-4">
 
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-xl">
-                    {child.gender === "male"
-                      ? "👦"
-                      : "👧"}
+                    {child.gender === "male" ? "👦" : child.gender === "female" ? "👧" : "👤"}
                   </div>
 
                   <div className="min-w-0 flex-1">
@@ -316,11 +316,11 @@ export default function ChildrenList({
                     </h3>
 
                     <p className="mt-1 text-sm text-slate-500">
-                      {age} سنة
+                      {age === null ? "سنة الميلاد غير محددة" : `${age} سنة`}
                     </p>
 
                     <p className="mt-1 text-xs text-slate-400">
-                      رقم القيد: {child.registration_number || "0000"}
+                      رقم العائلة: {child.family_number || "غير محدد"}
                     </p>
 
                   </div>
@@ -336,10 +336,14 @@ export default function ChildrenList({
                     </span>
 
                     <span className="truncate font-medium text-slate-700">
-                      {child.families?.family_name ||
-                        "غير محددة"}
+                      {child.family_number || child.families?.family_name || "غير محددة"}
                     </span>
 
+                  </div>
+
+                  <div className="flex justify-between gap-3 text-sm">
+                    <span className="text-slate-500">السكن</span>
+                    <span className="truncate font-medium text-slate-700">{child.residence || "غير محدد"}</span>
                   </div>
 
                   <div className="flex justify-between gap-3 text-sm">
@@ -349,9 +353,7 @@ export default function ChildrenList({
                     </span>
 
                     <span className="font-medium text-slate-700">
-                      {child.gender === "male"
-                        ? "ذكر"
-                        : "أنثى"}
+                      {child.gender === "male" ? "ذكر" : child.gender === "female" ? "أنثى" : "غير محدد"}
                     </span>
 
                   </div>
