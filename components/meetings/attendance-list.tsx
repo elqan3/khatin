@@ -38,6 +38,8 @@ export default function AttendanceList({
   const [error, setError] =
     useState("");
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [pointSettings, setPointSettings] = useState({
     participation: 1,
     special: 1,
@@ -120,6 +122,20 @@ export default function AttendanceList({
     presentCount -
     absentCount -
     excusedCount;
+
+  const normalizedSearch = searchTerm
+    .trim()
+    .toLocaleLowerCase("ar")
+    .replace(/[\u064B-\u065F\u0670\u0640]/g, "");
+
+  const filteredChildren = normalizedSearch
+    ? children.filter((child) =>
+        child.full_name
+          .toLocaleLowerCase("ar")
+          .replace(/[\u064B-\u065F\u0670\u0640]/g, "")
+          .includes(normalizedSearch)
+      )
+    : children;
 
   async function handleStatusChange(
     childId: string,
@@ -287,11 +303,36 @@ export default function AttendanceList({
 
       </div>
 
+      {/* Search */}
+      {children.length > 0 && (
+        <div className="mt-6">
+          <label htmlFor="attendance-child-search" className="mb-2 block text-sm font-medium text-slate-700">
+            البحث عن طفل
+          </label>
+          <div className="relative">
+            <input
+              id="attendance-child-search"
+              type="search"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              placeholder="اكتب اسم الطفل للبحث..."
+              autoComplete="off"
+              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#1e3a5f] focus:ring-2 focus:ring-[#1e3a5f]/10"
+            />
+          </div>
+          <p className="mt-2 text-xs text-slate-500" aria-live="polite">
+            {searchTerm.trim()
+              ? `تم العثور على ${filteredChildren.length} من أصل ${children.length} طفل`
+              : `إجمالي الأطفال: ${children.length}`}
+          </p>
+        </div>
+      )}
+
       {/* Children */}
       {children.length > 0 ? (
         <div className="mt-6 space-y-3">
 
-          {children.map((child) => {
+          {filteredChildren.map((child) => {
             const record =
               attendanceMap.get(child.id);
 
@@ -430,6 +471,16 @@ export default function AttendanceList({
             );
           })}
 
+          {filteredChildren.length === 0 && (
+            <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
+              <p className="text-sm font-medium text-slate-700">
+                لم يتم العثور على طفل بهذا الاسم.
+              </p>
+              <p className="mt-1 text-xs text-slate-500">
+                تحقق من كتابة الاسم أو جرّب جزءًا آخر منه.
+              </p>
+            </div>
+          )}
         </div>
       ) : (
         <div className="mt-6 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center">
